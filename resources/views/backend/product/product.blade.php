@@ -61,7 +61,15 @@
                             </div>
 
                             <div class="form-group">
-                                <input type="text" name="brand" class="form-control" placeholder="Brand">
+
+
+                                <select name="brand_id" class="form-control">
+                                    <option>-- Select Brand --</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
+                                    @endforeach
+                                </select>
+
                                 @error('brand')
                                     <strong class="text-danger">
                                         {{ $message }}

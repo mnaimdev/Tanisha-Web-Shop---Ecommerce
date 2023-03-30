@@ -129,8 +129,7 @@
 
                                         <div class="form-group">
                                             <div class="p-t-15">
-                                                <p class="text-muted text-sm">Haven't any account? <a
-                                                        href="{{ route('register') }}">register</a></p>
+
                                                 <button type="submit" class="btn btn-primary">Login</button>
                                             </div>
                                         </div>

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer("price");
             $table->integer("star")->nullable();
             $table->string("review")->nullable();
+            $table->string("image")->nullable();
             $table->timestamps();
         });
     }

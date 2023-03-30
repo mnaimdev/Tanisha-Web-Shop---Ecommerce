@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Inventory;
+use App\Models\OrderProducts;
 use App\Models\Product;
 use App\Models\ProductThumbnail;
 use App\Models\Size;
 use Illuminate\Http\Request;
+use Cookie;
+use Arr;
 
 class FrontendController extends Controller
 {
@@ -16,10 +19,22 @@ class FrontendController extends Controller
         $categories = Category::all();
         $products = Product::latest('created_at')->get();
         $feat_products = Product::latest()->take(3)->get();
+
+
+
+        $top_selling_products = OrderProducts::groupBy('product_id')
+            ->selectRaw('product_id, sum(quantity) as total')
+            ->orderBy('total', 'DESC')
+            ->get();
+
+        //  Cookie
+
+
         return view("frontend.index", [
             'categories' => $categories,
             'products' => $products,
             'feat_products' => $feat_products,
+            'top_selling_products' => $top_selling_products,
         ]);
     }
 
@@ -30,12 +45,20 @@ class FrontendController extends Controller
         $product_thumbnails = ProductThumbnail::where("product_id", $product_info->id)->get();
         $sizes = Size::all();
 
+        // color, size
         $available_colors = Inventory::where("product_id", $product_info->id)
             ->groupBy("color_id")
             ->selectRaw("count(*) as total, color_id")
             ->get();
 
         $available_size = Inventory::where("product_id", $product_info->id)->first()->size_id;
+
+        // reviews
+        $reviews = OrderProducts::where('product_id', $product_info->id)->where('review', '!=', null)->get();
+        $total_reviews = OrderProducts::where('product_id', $product_info->id)->where('review', '!=', null)->count();
+        $total_stars = OrderProducts::where('product_id', $product_info->id)->where('review', '!=', null)->sum('star');
+
+        // Cookies
 
 
         return view("frontend.product.product_details", [
@@ -45,6 +68,9 @@ class FrontendController extends Controller
             'available_colors' => $available_colors,
             'sizes' => $sizes,
             'available_size' => $available_size,
+            'reviews' => $reviews,
+            'total_reviews' => $total_reviews,
+            'total_stars' => $total_stars,
         ]);
     }
 

@@ -51,14 +51,24 @@
                             <div class="prt_02 mb-3">
                                 <h2 class="ft-bold mb-1">{{ $product_info->product_name }}</h2>
                                 <div class="text-left">
+
                                     <div class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star"></i>
-                                        <span class="small">(412 Reviews)</span>
+
+                                        @php
+                                            $ratings = 0;
+                                            if ($total_reviews != 0) {
+                                                $ratings = round($total_stars / $total_reviews);
+                                            }
+
+                                        @endphp
+
+                                        @for ($i = 1; $i <= $ratings; $i++)
+                                            <i class="fas fa-star filled"></i>
+                                        @endfor
+
+                                        <span class="small">({{ $total_reviews }} Reviews)</span>
                                     </div>
+
                                     <div class="elis_rty">
                                         @if ($product_info->discount)
                                             <span class="ft-medium text-muted line-through fs-md mr-2">৳
@@ -69,6 +79,7 @@
                                             {{ $product_info->after_discount }}</span>
                                         {{-- <span class="ft-regular text-light bg-success py-1 px-2 fs-sm">In Stock</span> --}}
                                     </div>
+
                                 </div>
                             </div>
 
@@ -252,186 +263,179 @@
                         <!-- Reviews Content -->
                         <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                             <div class="reviews_info">
-                                <div class="single_rev d-flex align-items-start br-bottom py-3">
-                                    <div class="single_rev_thumb"><img src="assets/img/team-1.jpg"
-                                            class="img-fluid circle" width="90" alt="" /></div>
-                                    <div class="single_rev_caption d-flex align-items-start pl-3">
-                                        <div class="single_capt_left">
-                                            <h5 class="mb-0 fs-md ft-medium lh-1">Daniel Rajdesh</h5>
-                                            <span class="small">30 jul 2021</span>
-                                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
-                                                praesentium voluptatum deleniti atque corrupti quos dolores et quas
-                                                molestias excepturi sint occaecati cupiditate non provident, similique sunt
-                                                in culpa qui officia deserunt mollitia animi, id est laborum</p>
-                                        </div>
-                                        <div class="single_capt_right">
-                                            <div
-                                                class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <!-- Single Review -->
-                                <div class="single_rev d-flex align-items-start br-bottom py-3">
-                                    <div class="single_rev_thumb"><img src="assets/img/team-2.jpg"
-                                            class="img-fluid circle" width="90" alt="" /></div>
-                                    <div class="single_rev_caption d-flex align-items-start pl-3">
-                                        <div class="single_capt_left">
-                                            <h5 class="mb-0 fs-md ft-medium lh-1">Seema Gupta</h5>
-                                            <span class="small">30 Aug 2021</span>
-                                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
-                                                praesentium voluptatum deleniti atque corrupti quos dolores et quas
-                                                molestias excepturi sint occaecati cupiditate non provident, similique sunt
-                                                in culpa qui officia deserunt mollitia animi, id est laborum</p>
-                                        </div>
-                                        <div class="single_capt_right">
-                                            <div
-                                                class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- Show Review -->
+                                {{-- @foreach ($reviews as $review)
+                                    <div class="single_rev d-flex align-items-start br-bottom py-3">
+                                        <div class="single_rev_thumb">
 
-                                <!-- Single Review -->
-                                <div class="single_rev d-flex align-items-start br-bottom py-3">
-                                    <div class="single_rev_thumb"><img src="assets/img/team-3.jpg"
-                                            class="img-fluid circle" width="90" alt="" /></div>
-                                    <div class="single_rev_caption d-flex align-items-start pl-3">
-                                        <div class="single_capt_left">
-                                            <h5 class="mb-0 fs-md ft-medium lh-1">Mark Jugermi</h5>
-                                            <span class="small">10 Oct 2021</span>
-                                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
-                                                praesentium voluptatum deleniti atque corrupti quos dolores et quas
-                                                molestias excepturi sint occaecati cupiditate non provident, similique sunt
-                                                in culpa qui officia deserunt mollitia animi, id est laborum</p>
-                                        </div>
-                                        <div class="single_capt_right">
-                                            <div
-                                                class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                            @if ($review->rel_to_customer->photo == '')
+                                                <img width="32"
+                                                    src="{{ Avatar::create($review->rel_to_customer->name)->toBase64() }}" />
+                                            @else
+                                                <img src="{{ asset('/uploads/customer') }}/{{ $review->rel_to_customer->photo }}"
+                                                    class="img-fluid circle" width="90" alt="" />
+                                            @endif
 
-                                <!-- Single Review -->
-                                <div class="single_rev d-flex align-items-start py-3">
-                                    <div class="single_rev_thumb"><img src="assets/img/team-4.jpg"
-                                            class="img-fluid circle" width="90" alt="" /></div>
-                                    <div class="single_rev_caption d-flex align-items-start pl-3">
-                                        <div class="single_capt_left">
-                                            <h5 class="mb-0 fs-md ft-medium lh-1">Meena Rajpoot</h5>
-                                            <span class="small">17 Dec 2021</span>
-                                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis
-                                                praesentium voluptatum deleniti atque corrupti quos dolores et quas
-                                                molestias excepturi sint occaecati cupiditate non provident, similique sunt
-                                                in culpa qui officia deserunt mollitia animi, id est laborum</p>
                                         </div>
-                                        <div class="single_capt_right">
-                                            <div
-                                                class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                                <i class="fas fa-star filled"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
-                            </div>
+                                        <div class="single_rev_caption d-flex align-items-start pl-3">
 
-                            <div class="reviews_rate">
-                                <form class="row">
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <h4>Submit Rating</h4>
-                                    </div>
-
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <div
-                                            class="revie_stars d-flex align-items-center justify-content-between px-2 py-2 gray rounded mb-2 mt-1">
-                                            <div class="srt_013">
-                                                <div class="submit-rating">
-                                                    <input id="star-5" type="radio" name="rating"
-                                                        value="star-5" />
-                                                    <label for="star-5" title="5 stars">
-                                                        <i class="active fa fa-star" aria-hidden="true"></i>
-                                                    </label>
-                                                    <input id="star-4" type="radio" name="rating"
-                                                        value="star-4" />
-                                                    <label for="star-4" title="4 stars">
-                                                        <i class="active fa fa-star" aria-hidden="true"></i>
-                                                    </label>
-                                                    <input id="star-3" type="radio" name="rating"
-                                                        value="star-3" />
-                                                    <label for="star-3" title="3 stars">
-                                                        <i class="active fa fa-star" aria-hidden="true"></i>
-                                                    </label>
-                                                    <input id="star-2" type="radio" name="rating"
-                                                        value="star-2" />
-                                                    <label for="star-2" title="2 stars">
-                                                        <i class="active fa fa-star" aria-hidden="true"></i>
-                                                    </label>
-                                                    <input id="star-1" type="radio" name="rating"
-                                                        value="star-1" />
-                                                    <label for="star-1" title="1 star">
-                                                        <i class="active fa fa-star" aria-hidden="true"></i>
-                                                    </label>
+                                            <div class="single_capt_left">
+                                                <h5 class="mb-0 fs-md ft-medium lh-1">{{ $review->rel_to_customer->name }}
+                                                </h5>
+                                                <span class="small">{{ $review->created_at->format('d-M-Y') }}</span>
+                                                <p>{{ $review->review }}</p>
+                                                <div>
+                                                    <img src="{{ asset('/uploads/review') }}/{{ $review->image }}"
+                                                        alt="">
                                                 </div>
                                             </div>
 
-                                            <div class="srt_014">
-                                                <h6 class="mb-0">4 Star</h6>
+                                            <div class="single_capt_right">
+
+                                                <div
+                                                    class="star-rating align-items-center d-flex justify-content-left mb-1 p-0">
+
+                                                    @for ($i = 1; $i <= $review->star; $i++)
+                                                        <i class="fas fa-star filled"></i>
+                                                    @endfor
+
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
+                                @endforeach --}}
 
-                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label class="medium text-dark ft-medium">Full Name</label>
-                                            <input type="text" class="form-control" />
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label class="medium text-dark ft-medium">Email Address</label>
-                                            <input type="email" class="form-control" />
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                            <label class="medium text-dark ft-medium">Description</label>
-                                            <textarea class="form-control"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                        <div class="form-group m-0">
-                                            <a class="btn btn-white stretched-link hover-black">Submit Review <i
-                                                    class="lni lni-arrow-right"></i></a>
-                                        </div>
-                                    </div>
-
-                                </form>
                             </div>
+
+
+
+                            @auth('customerlogin')
+                                @if (App\Models\OrderProducts::where('customer_id', Auth::guard('customerlogin')->id())->where('product_id', $product_info->id)->exists())
+                                    @if (App\Models\OrderProducts::where('customer_id', Auth::guard('customerlogin')->id())->where('product_id', $product_info->id)->whereNull('review')->first() == true)
+                                        <div class="reviews_rate">
+                                            <form class="row" action="{{ route('review.store') }}" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                    <h4>Submit Rating</h4>
+                                                </div>
+
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                    <div
+                                                        class="revie_stars d-flex align-items-center justify-content-between px-2 py-2 gray rounded mb-2 mt-1">
+                                                        <div class="srt_013">
+                                                            <div class="submit-rating">
+                                                                <input id="star-5" type="radio" name="star"
+                                                                    value="5" />
+                                                                <label for="star-5" title="5 stars">
+                                                                    <i class="active fa fa-star" aria-hidden="true"></i>
+                                                                </label>
+                                                                <input id="star-4" type="radio" name="star"
+                                                                    value="4" />
+                                                                <label for="star-4" title="4 stars">
+                                                                    <i class="active fa fa-star" aria-hidden="true"></i>
+                                                                </label>
+                                                                <input id="3" type="radio" name="star"
+                                                                    value="3" />
+                                                                <label for="3" title="3 stars">
+                                                                    <i class="active fa fa-star" aria-hidden="true"></i>
+                                                                </label>
+                                                                <input id="2" type="radio" name="star"
+                                                                    value="2" />
+                                                                <label for="2" title="2 stars">
+                                                                    <i class="active fa fa-star" aria-hidden="true"></i>
+                                                                </label>
+                                                                <input id="1" type="radio" name="star"
+                                                                    value="1" />
+                                                                <label for="1" title="1 star">
+                                                                    <i class="active fa fa-star" aria-hidden="true"></i>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="srt_014">
+                                                            <h6 class="mb-0">4 Star</h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="medium text-dark ft-medium">Full Name</label>
+                                                        <input type="text" class="form-control"
+                                                            value="{{ Auth::guard('customerlogin')->user()->name }}"
+                                                            readonly />
+                                                    </div>
+                                                </div>
+
+
+                                                <input type="hidden" name="customer_id"
+                                                    value="{{ Auth::guard('customerlogin')->id() }}">
+                                                <input type="hidden" name="product_id" value="{{ $product_info->id }}">
+
+
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="medium text-dark ft-medium">Email Address</label>
+                                                        <input type="email" class="form-control"
+                                                            value="{{ Auth::guard('customerlogin')->user()->email }}"
+                                                            readonly />
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="medium text-dark ft-medium">Image</label>
+                                                        <input type="file" class="form-control" name="image" />
+                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="medium text-dark ft-medium">Description</label>
+                                                        <textarea name="review" class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                                    <div class="form-group m-0">
+                                                        <button type="submit"
+                                                            class="btn btn-white stretched-link hover-black">Submit
+                                                            Review <i class="lni lni-arrow-right"></i></button>
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    @else
+                                        <div class="alert alert-danger">
+                                            <h3>You have already given a review</h3>
+                                        </div>
+                                    @endif
+                                    <!-- else -->
+                                @else
+                                    <div class="alert alert-info">
+                                        <h3>You haven't buy this product yet</h3>
+                                    </div>
+                                @endif
+
+                                <!-- else -->
+                            @else
+                                <div class="alert alert-info">
+                                    <h3>Please login to give a review, <a href="{{ route('customer.login') }}">Login</a></h3>
+                                </div>
+                            @endauth
+
+
+
+
 
                         </div>
                     </div>

@@ -127,6 +127,7 @@
             </div>
         </div>
 
+        <!-- Search -->
         <div class="headd-sty header">
             <div class="container">
                 <div class="row">
@@ -135,21 +136,29 @@
                             <div class="headd-sty-left d-flex align-items-center">
                                 <div class="headd-sty-01">
                                     <a class="nav-brand py-0" href="#">
-                                        <img src="assets/img/logo.png" class="logo" alt="" />
+                                        <img src="{{ asset('/frontend_assets/img/logo.png') }}" class="logo"
+                                            alt="" />
                                     </a>
                                 </div>
+
                                 <div class="headd-sty-02 ml-3">
-                                    <form class="bg-white rounded-md border-bold">
+                                    <div class="bg-white rounded-md border-bold">
                                         <div class="input-group">
-                                            <input type="text" class="form-control custom-height b-0"
+                                            <input type="text" id="search-input" value="{{ @$_GET['q'] }}"
+                                                class="form-control custom-height b-0"
                                                 placeholder="Search for products..." />
                                             <div class="input-group-append">
-                                                <div class="input-group-text"><button
-                                                        class="btn bg-white text-danger custom-height rounded px-3"
-                                                        type="button"><i class="fas fa-search"></i></button></div>
+                                                <div class="input-group-text">
+                                                    <button class="btn bg-white text-danger custom-height rounded px-3"
+                                                        id="search-btn" type="button">
+
+                                                        <i class="fas fa-search"></i>
+
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </form>
+                                    </div>
                                 </div>
                             </div>
                             <div class="headd-sty-last">
@@ -214,6 +223,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Start Navigation -->
         <div class="headerd header-dark head-style-2">
@@ -629,6 +639,10 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
+
+
+
+
     <script src="{{ asset('/frontend_assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('/frontend_assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('/frontend_assets/js/bootstrap.min.js') }}"></script>
@@ -653,7 +667,7 @@
     <!-- ============================================================== -->
 
 
-    @yield('footer_script')
+
 
     <script>
         function openWishlist() {
@@ -684,6 +698,44 @@
             document.getElementById("Search").style.display = "none";
         }
     </script>
+
+
+    {{-- <script>
+        $('#search-btn').click(function() {
+            var search_input = $('#search-input').val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var category_id = $("input[class='category_id']:checked").attr('value');
+            var brand = $("input[class='brand']:checked").attr('value');
+            var color_id = $("input[class='color_id']:checked").attr('value');
+            var size_id = $("input[class='size_id']:checked").attr('value');
+            var sort = $('.sort').val();
+            var link = "{{ route('search') }}" + "?q=" + search_input + "&min=" + min + "&max=" + max +
+                "&category_id=" + category_id + "&color_id=" + color_id + "&size_id=" + size_id + "&sort=" + sort +
+                "&brand=" + brand;
+            location.href = link;
+        });
+    </script> --}}
+
+    <script>
+        $('#search-btn').click(function() {
+            var search_input = $('#search-input').val();
+            var min = $('#min').val();
+            var max = $('#max').val();
+            var category_id = $('input[class="category_id"]:checked').attr('value');
+            var brand_id = $('input[class="brand_id"]:checked').attr('value');
+            var color_id = $('input[class="color_id"]:checked').attr('value');
+            var size_id = $('input[class="size_id"]:checked').attr('value');
+            var sort = $('.sort').val();
+            var link = "{{ route('search') }}" + "?q=" + search_input + "&category_id=" + category_id + "&min=" +
+                min + "&max=" + max + "&brand_id=" + brand_id + "&color_id=" + color_id + "&size_id=" + size_id +
+                "&sort=" + sort;
+            location.href = link;
+        });
+    </script>
+
+
+    @yield('footer_script')
 
 </body>
 

@@ -9,7 +9,11 @@ use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SslCommerzPaymentController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +82,25 @@ Route::post("/customer/profile/update", [CustomerController::class, "profile_upd
 
 Route::get("customer/order", [CustomerController::class, "customer_order"])->name("customer.order");
 
+// Password Reset
+Route::get('/forget/password', [CustomerController::class, 'forget_password'])->name('forget.password');
+Route::post('/customer/pass/reset/req', [CustomerController::class, 'customer_pass_reset_req'])->name('customer.pass.reset.req');
+
+Route::get('/customer/pass/reset/form/{token}', [CustomerController::class, 'customer_pass_reset_form']);
+Route::post('/customer/pass/reset', [CustomerController::class, 'customer_pass_reset'])->name('customer.pass.reset');
+
+
+// Email Verify
+Route::get('/customer/email/verify/{token}', [CustomerController::class, 'customer_email_verify']);
+
+
+// Review
+Route::post('/review/store', [ReviewController::class, 'review_store'])->name('review.store');
+
+
+// Search
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
 
 // ----------------------------End Frontend-------------------------- //
 
@@ -96,6 +119,8 @@ Route::get("/trash/delete/{user_id}", [UserController::class, 'trash_delete'])->
 Route::get("/trash/restore-trash/{user_id}", [UserController::class, 'trash_restore'])->name("trash.restore");
 
 Route::post("/check/trash", [UserController::class, 'check_trash'])->name("check.trash");
+
+Route::post('/add/user', [UserController::class, 'add_user'])->name('add.user');
 
 
 // Category
@@ -146,11 +171,33 @@ Route::get("/color/delete/{color_id}", [ProductController::class, "color_delete"
 Route::get("/size/delete/{size_id}", [ProductController::class, "size_delete"])->name("size.delete");
 
 
+// Brand
+Route::get('/brand', [ProductController::class, 'brand'])->name('brand');
+Route::post('/brand/store', [ProductController::class, 'brand_store'])->name('brand.store');
+Route::get('/brand/remove/{brand_id}', [ProductController::class, 'brand_remove'])->name('brand.remove');
+
+
 // Orders
 Route::get('/orders', [OrderController::class, 'orders'])->name('orders');
 Route::post('/order/status', [OrderController::class, 'order_status'])->name('order.status');
 Route::get('/invoice/download/{id}', [OrderController::class, 'invoice_download'])->name('invoice.download');
 
+
+// Role Management
+// Route::post('/permission/store', [RoleController::class, 'permission_store'])->name('permission.store');
+
+Route::get('/role', [RoleController::class, 'role'])->name('role');
+Route::post('/role/store', [RoleController::class, 'role_store'])->name('role.store');
+Route::get('/edit/role/{role_id}', [RoleController::class, 'edit_role'])->name('edit.role');
+Route::get('/remove/role/{role_id}', [RoleController::class, 'remove_role'])->name('remove.role');
+Route::post('/role/update', [RoleController::class, 'role_update'])->name('role.update');
+
+Route::get('/assign/role', [RoleController::class, 'assign_role'])->name('assign.role');
+Route::post('/user/assign/role', [RoleController::class, 'user_assign_role'])->name('user.assign.role');
+
+Route::get('/remove/user/role/{user_id}', [RoleController::class, 'remove_user_role'])->name('remove.user.role');
+Route::get('/user/edit/permission/{user_id}', [RoleController::class, 'user_edit_permission'])->name('user.edit.permission');
+Route::post('/update/user/permission', [RoleController::class, 'update_user_permission'])->name('update.user.permission');
 
 
 // SSLCOMMERZ Start
@@ -166,3 +213,9 @@ Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
 
 Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
 //SSLCOMMERZ END
+
+
+// Stripe
+
+Route::get('/stripe', [StripePaymentController::class, 'stripe'])->name('stripe');
+Route::post('/stripe/post', [StripePaymentController::class, 'stripe_post'])->name('stripe.post');

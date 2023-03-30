@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customerlogin;
+use App\Models\CustomerMailVerify;
+use App\Models\CustomerPassReset;
 use App\Models\Orders;
+use App\Notifications\CustomerPassResetNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Image;
 
 class CustomerController extends Controller
@@ -105,5 +110,72 @@ class CustomerController extends Controller
         return view('frontend.custom.customer_order', [
             'orders' => $orders,
         ]);
+    }
+
+
+    // Forget Password
+    function forget_password()
+    {
+        return view('frontend.pass_reset.forget_password');
+    }
+
+    function customer_pass_reset_req(Request $request)
+    {
+        $customer_info = Customerlogin::where('email', $request->email)->firstOrFail();
+        $customer_id = $customer_info->id;
+
+        CustomerPassReset::where('customer_id', $customer_id)->delete();
+
+        $customer_info_inserted = CustomerPassReset::create([
+            'customer_id' => $customer_id,
+            'token' => uniqid(),
+            'created_at' => Carbon::now(),
+        ]);
+
+        Notification::send($customer_info, new CustomerPassResetNotification($customer_info_inserted));
+
+
+        return back()->with('notif', 'We have sent you a notification to reset your password');
+    }
+
+    function customer_pass_reset_form($token)
+    {
+        return view('frontend.pass_reset.pass_reset_form', [
+            'token' => $token,
+        ]);
+    }
+
+    function customer_pass_reset(Request $request)
+    {
+        if ($request->password == $request->password_confirmation) {
+
+            $customer = CustomerPassReset::where('token', $request->token)->firstOrFail();
+
+            Customerlogin::find($customer->customer_id)->update([
+                'password' => Hash::make($request->password),
+            ]);
+
+            CustomerPassReset::where('token', $request->token)->delete();
+
+            return redirect()->route('customer.login')->with('reset', 'You have successfully reset your password. Now you can login with your new password');
+        } else {
+            return back()->with('not_match', 'Password not match!');
+        }
+    }
+
+
+    // Email Verify
+    function customer_email_verify($token)
+    {
+        $customer = CustomerMailVerify::where('token', $token)->firstOrFail();
+        $customer_id = $customer->customer_id;
+
+        Customerlogin::find($customer_id)->update([
+            'email_verified_at' => Carbon::now()->format('d-m-Y'),
+        ]);
+
+        CustomerMailVerify::where('token', $token)->delete();
+
+        return redirect()->route('customer.login')->with('email_verify', 'You have verified your email successfully! Now you can login without any problem');
     }
 }

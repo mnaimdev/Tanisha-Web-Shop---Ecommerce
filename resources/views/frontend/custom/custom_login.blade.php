@@ -15,6 +15,24 @@
                     <form action="{{ route('login.store') }}" method="POST">
                         @csrf
 
+                        @if (session('mail'))
+                            <div class="alert alert-success">
+                                {{ session('mail') }}
+                            </div>
+                        @endif
+
+                        @if (session('reset'))
+                            <div class="alert alert-success">
+                                {{ session('reset') }}
+                            </div>
+                        @endif
+
+                        @if (session('email_verify'))
+                            <div class="alert alert-success">
+                                {{ session('email_verify') }}
+                            </div>
+                        @endif
+
                         @if (session('exist'))
                             <div class="alert alert-danger">
                                 {{ session('exist') }}
@@ -46,7 +64,7 @@
                                             href="{{ route('customer.register') }}">Register</a></span>
                                 </div>
                                 <div class="eltio_k2">
-                                    <a href="#">Forgot Password?</a>
+                                    <a href="{{ route('forget.password') }}">Forgot Password?</a>
                                 </div>
                             </div>
                         </div>

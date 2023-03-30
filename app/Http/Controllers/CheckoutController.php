@@ -109,7 +109,8 @@ class CheckoutController extends Controller
 
         // payment method 3
         else {
-            echo "Stripe";
+            $data = $request->all();
+            return redirect()->route('stripe')->with('data', $data);
         }
     }
 

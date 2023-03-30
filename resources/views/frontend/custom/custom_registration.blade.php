@@ -11,6 +11,13 @@
                     <form action="{{ route('register.store') }}" method="POST">
                         @csrf
 
+
+                        @if (session('verify'))
+                            <div class="alert alert-warning">
+                                {{ session('verify') }}
+                            </div>
+                        @endif
+
                         <div class="form-group">
                             <label>Fullname*</label>
                             <input type="text" name="name" style="width: 100%; padding: 8px;">

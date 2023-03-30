@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Inventory;
@@ -21,9 +22,11 @@ class ProductController extends Controller
 
     function product()
     {
+        $brands = Brand::all();
         $categories = Category::all();
         return view("backend.product.product", [
             'categories' => $categories,
+            'brands' => $brands,
         ]);
     }
 
@@ -50,7 +53,7 @@ class ProductController extends Controller
             'subcategory_id' => $request->subcategory_id,
             'product_name' => $request->product_name,
             'price' => $request->price,
-            'brand' => $request->brand,
+            'brand_id' => $request->brand_id,
             'discount' => $request->discount,
             'after_discount' => $request->price - ($request->price * 10) / 100,
             'slug' => $slug,
@@ -225,5 +228,55 @@ class ProductController extends Controller
         Inventory::find($inventory_id)->delete();
 
         return back()->with("del_inventory", "Deleted Successfully :)");
+    }
+
+    // Brand
+    function brand()
+    {
+        $brands = Brand::all();
+        return view('backend.product.brand', [
+            'brands' => $brands,
+        ]);
+    }
+
+    function brand_store(Request $request)
+    {
+
+        if ($request->brand_image == '') {
+            Brand::create([
+                'brand_name' => $request->brand_name,
+            ]);
+
+            return back();
+        } else {
+            $uploaded_file = $request->brand_image;
+            $extension = $uploaded_file->getClientOriginalExtension();
+            $file_name = $request->brand_name . '.' . $extension;
+            Image::make($uploaded_file)->save(public_path('/uploads/brand/' . $file_name));
+
+            Brand::create([
+                'brand_name' => $request->brand_name,
+                'brand_image' => $file_name,
+            ]);
+
+            return back();
+        }
+    }
+
+    function brand_remove($brand_id)
+    {
+        $brand = Brand::find($brand_id);
+
+        if ($brand->brand_image != '') {
+            $deleted_from = public_path('/uploads/brand/' . $brand->brand_image);
+            unlink($deleted_from);
+
+            $brand->delete();
+
+            return back();
+        }
+
+        $brand->delete();
+        return back();
     }
 }

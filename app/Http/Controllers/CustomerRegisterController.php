@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerRequest;
 use App\Models\Customerlogin;
+use App\Models\CustomerMailVerify;
+use App\Notifications\CustomerEmailVerifyNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+
 use Illuminate\Support\Facades\Auth;
 
 class CustomerRegisterController extends Controller
@@ -28,12 +33,21 @@ class CustomerRegisterController extends Controller
                 'password' => bcrypt($request->password),
             ]);
 
-            if (Auth::guard("customerlogin")->attempt(['email' => $request->email, 'password' => $request->password])) {
-                return redirect("/")->with("login", "Logged in successfully!");
-            }
+            $customer = Customerlogin::where('email', $request->email)->firstOrFail();
 
-            // return back()->with("register", "Registered Successfully");
-        } else {
+            $customer_info = CustomerMailVerify::create([
+                'customer_id' => $customer->id,
+                'token' => uniqid(),
+                'created_at' => Carbon::now(),
+            ]);
+
+            Notification::send($customer, new CustomerEmailVerifyNotification($customer_info));
+
+            return back()->with('verify', 'Please verify your email :) ');
+        }
+
+        // password not match
+        else {
             return back()->with("match", "Password Not Match!");
         }
     }
@@ -41,8 +55,16 @@ class CustomerRegisterController extends Controller
     function login_store(Request $request)
     {
         if (Auth::guard("customerlogin")->attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect("/")->with("login", "Logged in successfully!");
-        } else {
+
+            if (Auth::guard('customerlogin')->user()->email_verified_at == null) {
+                return back()->with('mail', 'Please verify your email');
+            } else {
+                return redirect("/")->with("login", "Logged in successfully!");
+            }
+        }
+
+        // else
+        else {
             return back()->with("exist", "Email or Password Not Match");
         }
     }

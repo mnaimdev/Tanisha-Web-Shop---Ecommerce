@@ -228,6 +228,7 @@
                                     <a href="{{ route('product') }}">Add Product</a>
                                     <a href="{{ route('product.list') }}">Product List</a>
                                     <a href="{{ route('product.variation') }}">Product Variation</a>
+                                    <a href="{{ route('brand') }}">Add Brand</a>
                                 </li>
                             </ul>
                         </li>
@@ -236,7 +237,7 @@
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" href="javascript:void(0);">
                                 <span class="icon-holder">
-                                    <img src="{{ asset('/dashboard_assets/giftbox.png') }}" style="width: 20px;"
+                                    <img src="{{ asset('/dashboard_assets/giftbox.png') }}" style="width: 15px;"
                                         alt="">
                                 </span>
                                 <span class="title">Coupon</span>
@@ -256,7 +257,7 @@
                         <li class="nav-item dropdown">
                             <a class="dropdown-toggle" href="javascript:void(0);">
                                 <span class="icon-holder">
-                                    <img src="{{ asset('/dashboard_assets/giftbox.png') }}" style="width: 20px;"
+                                    <img src="{{ asset('/dashboard_assets/checkout.png') }}" style="width: 20px;"
                                         alt="">
                                 </span>
                                 <span class="title">Orders</span>
@@ -267,6 +268,28 @@
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="{{ route('orders') }}">Order List</a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle" href="javascript:void(0);">
+                                <span class="icon-holder">
+                                    <img src="{{ asset('/dashboard_assets/group.png') }}" style="width: 20px;"
+                                        alt="">
+                                </span>
+                                <span class="title">Role Management</span>
+                                <span class="arrow">
+                                    <i class="arrow-icon"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="{{ route('role') }}">Add Role</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('assign.role') }}">Assign Role</a>
                                 </li>
                             </ul>
                         </li>

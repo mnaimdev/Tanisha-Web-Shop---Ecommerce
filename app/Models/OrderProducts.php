@@ -25,4 +25,9 @@ class OrderProducts extends Model
     {
         return $this->belongsTo(Color::class, "color_id");
     }
+
+    function rel_to_customer()
+    {
+        return $this->belongsTo(Customerlogin::class, 'customer_id');
+    }
 }

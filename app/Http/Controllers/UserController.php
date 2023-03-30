@@ -145,4 +145,19 @@ class UserController extends Controller
             }
         }
     }
+
+    function add_user(Request $request)
+    {
+        if ($request->password_confirmation == $request->password) {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            return back();
+        } else {
+            return back()->with('not_match', 'Password Not Match');
+        }
+    }
 }

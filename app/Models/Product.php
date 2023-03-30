@@ -20,4 +20,9 @@ class Product extends Model
     {
         return $this->belongsTo(SubCategory::class, "subcategory_id");
     }
+
+    function rel_to_inventory()
+    {
+        return $this->hasMany(Inventory::class, 'product_id');
+    }
 }

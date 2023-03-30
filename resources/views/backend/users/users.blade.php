@@ -67,6 +67,78 @@
             </form>
         </div>
 
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mt-3">Add User</h3>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('add.user') }}" method="POST">
+                        @csrf
+
+                        @if (session('not_match'))
+                            <strong class="alert alert-danger mb-3">
+                                {{ session('not_match') }}
+                            </strong>
+                        @endif
+
+                        <div class="form-group mt-4">
+
+                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                name="name" value="{{ old('name') }}" required autocomplete="name" autofocus
+                                placeholder="Fullname">
+
+                            @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                name="email" value="{{ old('email') }}" required autocomplete="email"
+                                placeholder="Email">
+
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <input id="password" type="password"
+                                class="form-control @error('password') is-invalid @enderror" name="password" required
+                                autocomplete="new-password" placeholder="Password">
+
+                            @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
+
+                        <div class="form-group">
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
+                                required autocomplete="new-password" placeholder="Confirm Password">
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="p-t-15">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
 
     </div>
