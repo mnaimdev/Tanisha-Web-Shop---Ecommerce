@@ -7,6 +7,8 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerRegisterController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\GithubController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
@@ -93,6 +95,13 @@ Route::post('/customer/pass/reset', [CustomerController::class, 'customer_pass_r
 // Email Verify
 Route::get('/customer/email/verify/{token}', [CustomerController::class, 'customer_email_verify']);
 
+// Social Login
+Route::get('/github/redirect', [GithubController::class, 'github_redirect'])->name('github.redirect');
+Route::get('/github/callback', [GithubController::class, 'github_callback'])->name('github.callback');
+
+Route::get('/google/redirect', [GoogleController::class, 'google_redirect'])->name('google.redirect');
+Route::get('/google/callback', [GoogleController::class, 'google_callback'])->name('google.callback');
+
 
 // Review
 Route::post('/review/store', [ReviewController::class, 'review_store'])->name('review.store');
@@ -100,6 +109,8 @@ Route::post('/review/store', [ReviewController::class, 'review_store'])->name('r
 
 // Search
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+Route::get('/category/product/{category_id}', [FrontendController::class, 'category_product'])->name('category.product');
 
 
 // ----------------------------End Frontend-------------------------- //

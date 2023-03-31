@@ -73,6 +73,33 @@
                             <button type="submit"
                                 class="btn btn-md full-width bg-dark text-light fs-md ft-medium">Login</button>
                         </div>
+
+                        <div class="form-group bg-primary p-2">
+                            <p class="text-center font-weight-bold">
+                                <a href="{{ route('google.redirect') }}" class="text-white">Login with
+                                    <img src="{{ asset('/frontend_assets/img/google.png') }}" alt="" width="32">
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="form-group bg-secondary p-2">
+                            <p class="text-center font-weight-bold">
+                                <a href="{{ route('github.redirect') }}" class="text-white">Login with
+                                    <img src="{{ asset('/frontend_assets/img/github.png') }}" alt=""
+                                        width="32">
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="form-group p-2" style="background-color:#9abce6">
+                            <p class="text-center font-weight-bold">
+                                <a href="" class="text-white">Login with
+                                    <img src="{{ asset('/frontend_assets/img/facebook.png') }}" alt=""
+                                        width="32">
+                                </a>
+                            </p>
+                        </div>
+
                     </form>
                 </div>
             </div>

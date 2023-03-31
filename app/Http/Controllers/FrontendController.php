@@ -27,14 +27,25 @@ class FrontendController extends Controller
             ->orderBy('total', 'DESC')
             ->get();
 
-        //  Cookie
+        //  Cookies
 
+        $recent = json_decode(Cookie::get('recent'), true);
+
+        if ($recent == null) {
+            $recent = [];
+            $after_unique = array_unique($recent);
+        } else {
+            $after_unique = array_unique($recent);
+        }
+
+        $recent_viewed_products = Product::find($after_unique);
 
         return view("frontend.index", [
             'categories' => $categories,
             'products' => $products,
             'feat_products' => $feat_products,
             'top_selling_products' => $top_selling_products,
+            'recent_viewed_products' => $recent_viewed_products,
         ]);
     }
 
@@ -59,6 +70,21 @@ class FrontendController extends Controller
         $total_stars = OrderProducts::where('product_id', $product_info->id)->where('review', '!=', null)->sum('star');
 
         // Cookies
+
+        $product_id = $product_info->id;
+
+        $al = Cookie::get('recent');
+
+        if ($al == null) {
+            $al = "[]";
+        }
+
+        $all_info = json_decode($al, true);
+        $new_info = Arr::prepend($all_info, $product_id);
+        $recent_product_id = json_encode($new_info);
+
+        Cookie::queue('recent', $recent_product_id, 1000);
+
 
 
         return view("frontend.product.product_details", [
@@ -90,5 +116,16 @@ class FrontendController extends Controller
             </div>';
         }
         echo $str;
+    }
+
+
+    function category_product($category_id)
+    {
+        $category_info = Category::find($category_id);
+        $products = Product::where('category_id', $category_id)->get();
+        return view('frontend.category_product', [
+            'category_info' => $category_info,
+            'products' => $products,
+        ]);
     }
 }

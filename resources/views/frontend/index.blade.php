@@ -18,7 +18,8 @@
                         <div class="killore--block-link-content">
                             <ul>
                                 @foreach ($categories as $category)
-                                    <li><a href="">
+                                    <li>
+                                        <a href="{{ route('category.product', $category->id) }}">
                                             <i class=""></i>
                                             {{ $category->category_name }}
                                         </a>
@@ -468,34 +469,38 @@
                     </div>
                     <div class="ftr-content">
                         <!-- Single Item -->
-
-                        <div class="product_grid row">
-                            <div class="col-xl-4 col-lg-5 col-md-5 col-4">
-                                <div class="shop_thumb position-relative">
-                                    <div class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">
-                                        Sale</div>
-                                    <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html">
-                                        <img class="card-img-top" src="{{ asset('/frontend_assets/img/shop/7.png') }}"
-                                            alt="..."></a>
-                                </div>
-                            </div>
-                            <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
-                                <div class="text-left mfliud">
-                                    <div class="elso_titl"><span class="small">TV/LED</span></div>
-                                    <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a href="shop-single-v1.html">Smart
-                                            43 Inch LED</a></h5>
-                                    <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star filled"></i>
-                                        <i class="fas fa-star"></i>
+                        @foreach ($recent_viewed_products as $recent)
+                            <div class="product_grid row">
+                                <div class="col-xl-4 col-lg-5 col-md-5 col-4">
+                                    <div class="shop_thumb position-relative">
+                                        <div
+                                            class="badge bg-info text-white position-absolute ft-regular ab-left text-upper">
+                                            Sale</div>
+                                        <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html">
+                                            <img class="card-img-top"
+                                                src="{{ asset('/uploads/product/preview') }}/{{ $recent->preview }}"
+                                                alt="..."></a>
                                     </div>
-                                    <div class="elis_rty"><span class="ft-bold text-dark fs-sm">$909 -
-                                            $1400</span></div>
+                                </div>
+                                <div class="col-xl-8 col-lg-7 col-md-7 col-8 pl-0">
+                                    <div class="text-left mfliud">
+                                        <div class="elso_titl"><span
+                                                class="small">{{ $recent->rel_to_category->category_name }}</span></div>
+                                        <h5 class="fs-md mb-0 lh-1 mb-1 ft-medium"><a
+                                                href="shop-single-v1.html">{{ $recent->product_name }}</a></h5>
+                                        <div class="star-rating align-items-center d-flex justify-content-left mb-2 p-0">
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star filled"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <div class="elis_rty"><span class="ft-bold text-dark fs-sm">TK
+                                                {{ $recent->after_discount }}</span></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
 
                     </div>
                 </div>
